@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
 import { SingleProduct } from "../stories/singleProduct";
@@ -9,8 +8,9 @@ const Home: NextPage = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const test = async () => {
-    const respond = await fetch(`/api/allproduct/allProducts`);
+    const respond = await fetch(`/api/products/products`);
     const data = await respond.json();
     const allCategories = data.map((product: any) => product.category);
     const sortedCategories = allCategories.filter(function (
@@ -23,6 +23,7 @@ const Home: NextPage = () => {
     setCategories(sortedCategories);
     setLoading(true);
   };
+
   useEffect(() => {
     test();
   }, []);

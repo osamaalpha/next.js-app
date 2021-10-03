@@ -1,8 +1,4 @@
-import type {
-  GetStaticPathsContext,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
-} from "next";
+import type { InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
 import { SingleProduct } from "../../stories/singleProduct";
 export default function Id({

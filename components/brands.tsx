@@ -68,11 +68,11 @@ const Brands = ({ setAllProducts }: any) => {
 
   useEffect(() => {
     const getBrandProduct = async () => {
-      const res = await fetch(`/api/getBrandProducts/${brand}`);
-      const data = await res.json();
-      setAllProducts(data);
-      console.log(brand);
-      console.log(data);
+      if (brand !== "") {
+        const res = await fetch(`/api/products/brand/${brand}`);
+        const data = await res.json();
+        setAllProducts(data);
+      }
     };
     getBrandProduct();
   }, [brand]);
@@ -81,12 +81,9 @@ const Brands = ({ setAllProducts }: any) => {
     <>
       <h4>Brands</h4>
       <select onChange={(e: any) => handleBrand(e)} value={brand}>
-        <option disabled selected>
-          {" "}
-          -- select an option --{" "}
-        </option>
+        <option disabled> -- select an option -- </option>
         {brands.map((el: any) => {
-          return <option>{el}</option>;
+          return <option key={el}>{el}</option>;
         })}
       </select>
     </>

@@ -34,11 +34,11 @@ const TagList = ({ setAllProducts }: any) => {
 
   useEffect(() => {
     const getTagProduct = async () => {
-      const res = await fetch(`/api/getTagProduct/${tag}`);
-      const data = await res.json();
-      setAllProducts(data);
-      console.log(tag);
-      console.log(data);
+      if (tag !== "") {
+        const res = await fetch(`/api/products/tag/${tag}`);
+        const data = await res.json();
+        setAllProducts(data);
+      }
     };
     getTagProduct();
   }, [tag]);
@@ -49,6 +49,7 @@ const TagList = ({ setAllProducts }: any) => {
       {tags.map((el: any) => {
         return (
           <a
+            key={el}
             className={styles.tag}
             style={{ cursor: "pointer" }}
             onClick={(e) => handleTag(e)}
