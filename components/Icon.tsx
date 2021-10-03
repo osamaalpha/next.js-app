@@ -9,5 +9,5 @@ const Icon = forwardRef((
     <FontAwesomeIcon icon={faCartArrowDown} {...props} />
   </h1>
 ));
-
+Icon.displayName = "Icon";
 export default Icon;

@@ -26,7 +26,7 @@ const Cart = () => {
       <div className={styles.grid}>
         {cartProduct.map((el: any) => {
           return (
-            <div className={styles.card}>
+            <div className={styles.card} key={el.id}>
               <p>{el.brand}</p>
               <p>{el.name}</p>
               <p>

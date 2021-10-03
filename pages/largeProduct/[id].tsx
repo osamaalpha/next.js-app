@@ -20,11 +20,10 @@ export default function Id({
 export async function getStaticProps(context: any) {
   const id = context.params.id;
   const products = await fetch(
-    "http://makeup-api.herokuapp.com/api/v1/products.json"
+    `http://makeup-api.herokuapp.com/api/v1/products/${id.toString()}.json`
   );
-  const data = await products.json();
-  const arrProduct = data.filter((el: any) => el.id === parseInt(id));
-  const product = arrProduct[0];
+  const product = await products.json();
+
   return {
     props: {
       product,
