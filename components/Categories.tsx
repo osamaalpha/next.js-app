@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-
+import { useRouter } from "next/router";
 const Categories = ({ categories, setAllproducts }: any) => {
+  const router = useRouter();
   const [category, setCategory] = useState("");
   const handleCategory = (e: any) => {
     setCategory(e.target.value);
@@ -12,6 +13,9 @@ const Categories = ({ categories, setAllproducts }: any) => {
         const res = await fetch(`/api/products/category/${category}`);
         const data = await res.json();
         setAllproducts(data);
+        router.push({
+          query: `category=${category}`,
+        });
       }
     };
     getCategoryProduct();

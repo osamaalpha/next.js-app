@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import styles from "../styles/Home.module.css";
+import { useRouter } from "next/router";
 const Brands = ({ setAllProducts }: any) => {
+  const router = useRouter();
   const [brand, setBrand] = useState("");
   const brands = [
     "almay",
@@ -72,6 +73,9 @@ const Brands = ({ setAllProducts }: any) => {
         const res = await fetch(`/api/products/brand/${brand}`);
         const data = await res.json();
         setAllProducts(data);
+        router.push({
+          query: `brand=${brand}`,
+        });
       }
     };
     getBrandProduct();

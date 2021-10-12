@@ -6,12 +6,20 @@ import Brands from "./brands";
 import Pricing from "./price";
 import TagList from "./tagList";
 import Categories from "./Categories";
-const Navbar = ({ categories, setAllProducts }: any): ReactElement => {
+const Navbar = ({
+  categories,
+  setAllProducts,
+  allProducts,
+}: any): ReactElement => {
   const ref = useRef();
   return (
     <>
       <div className={styles.navbar}>
-        <Categories setAllproducts={setAllProducts} categories={categories} />
+        <Categories
+          setAllproducts={setAllProducts}
+          categories={categories}
+          allProducts={allProducts}
+        />
         <Brands setAllProducts={setAllProducts} />
         <Pricing setAllProducts={setAllProducts} />
         <Link href={{ pathname: "/cart" }}>

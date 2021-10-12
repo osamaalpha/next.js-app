@@ -1,6 +1,6 @@
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GlobalContext } from "../components/common/context";
 interface CardProps {
   product: any;

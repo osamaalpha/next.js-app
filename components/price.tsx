@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
-import styles from "../styles/Home.module.css";
-const Pricing = ({ setAllProducts }: any) => {
+import { useRouter } from "next/router";
+import { useState } from "react";
+
+const Pricing = ({ setAllProducts, allProducts }: any) => {
+  const router = useRouter();
   const [less, setLess] = useState(0);
   const [greater, setGreater] = useState(0);
 
@@ -11,53 +13,78 @@ const Pricing = ({ setAllProducts }: any) => {
     setLess(e.target.value);
   };
 
-  useEffect(() => {
-    const getLessPrice = async () => {
-      if (less !== 0 && less.toString() !== "") {
-        const res = await fetch(`/api/products/priceLessThan/${less}`);
-        const data = await res.json();
-        setAllProducts(data);
-      }
-    };
-    getLessPrice();
-  }, [less]);
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (
+      less !== 0 &&
+      less.toString() !== "" &&
+      greater !== 0 &&
+      greater.toString() !== ""
+    ) {
+      const getPrice = async () => {
+        const resLess = await fetch(`/api/products/priceLessThan/${less}`);
+        const dataLess = await resLess.json();
+        const resGreater = await fetch(
+          `/api/products/priceGreaterThan/${greater}`
+        );
+        const dataGreater = await resGreater.json();
+        setAllProducts([...dataLess, ...dataGreater]);
+        router.push({
+          query: `lessThan=${less}&greaterThan=${greater}`,
+        });
+      };
 
-  useEffect(() => {
-    const getGreaterPrice = async () => {
-      if (greater !== 0 && greater.toString() !== "") {
+      getPrice();
+    } else if (greater !== 0 && greater.toString() !== "") {
+      const getGreaterPrice = async () => {
         const res = await fetch(`/api/products/priceGreaterThan/${greater}`);
         const data = await res.json();
         setAllProducts(data);
-      }
-    };
-    getGreaterPrice();
-  }, [greater]);
+        router.push({
+          query: `greaterThan=${greater}`,
+        });
+      };
 
+      getGreaterPrice();
+    } else if (less !== 0 && less.toString() !== "") {
+      const getLessPrice = async () => {
+        const res = await fetch(`/api/products/priceLessThan/${less}`);
+        const data = await res.json();
+        setAllProducts(data);
+        router.push({
+          query: `lessThan=${less}`,
+        });
+      };
+
+      getLessPrice();
+    } else {
+      alert("please enter a price");
+    }
+  };
   return (
     <div>
       <h4>Price</h4>
-      <label>Less than $</label>
-
-      <input
-        type="number"
-        id="tentacles"
-        name="tentacles"
-        min="1"
-        max="1000"
-        value={less}
-        onChange={(e) => handleLess(e)}
-      ></input>
-      <label>Greater than $</label>
-
-      <input
-        type="number"
-        id="tentacles"
-        name="tentacles"
-        min="1"
-        max="1000"
-        value={greater}
-        onChange={(e) => handleGreater(e)}
-      ></input>
+      <form className="search-form" onSubmit={(e) => handleSubmit(e)}>
+        <label>Less than $</label>
+        <input
+          type="number"
+          id="tentacles"
+          name="tentacles"
+          max="1000"
+          value={less}
+          onChange={handleLess}
+        ></input>
+        <label>Greater than $</label>
+        <input
+          type="number"
+          id="tentacles"
+          name="tentacles"
+          max="1000"
+          value={greater}
+          onChange={handleGreater}
+        ></input>
+        <input type="submit" />
+      </form>
     </div>
   );
 };

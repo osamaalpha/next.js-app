@@ -30,7 +30,11 @@ const Home: NextPage = () => {
 
   return (
     <div className={styles.container}>
-      <Navbar categories={categories} setAllProducts={setAllProducts} />
+      <Navbar
+        categories={categories}
+        setAllProducts={setAllProducts}
+        allProducts={allProducts}
+      />
       <h1>Products</h1>
 
       {!loading ? (

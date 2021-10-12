@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import styles from "../styles/Home.module.css";
 const TagList = ({ setAllProducts }: any) => {
+  const router = useRouter();
   const [tag, setTag] = useState("");
   const tags = [
     "Canadian",
@@ -38,6 +40,9 @@ const TagList = ({ setAllProducts }: any) => {
         const res = await fetch(`/api/products/tag/${tag}`);
         const data = await res.json();
         setAllProducts(data);
+        router.push({
+          query: `tag=${tag}`,
+        });
       }
     };
     getTagProduct();

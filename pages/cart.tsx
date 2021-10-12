@@ -1,41 +1,37 @@
 import { GlobalContext } from "../components/common/context";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
+import CartItem from "../components/cartItem";
 const Cart = () => {
-  const { cartProduct, setCartProduct } = useContext(GlobalContext);
+  const { cartProduct } = useContext(GlobalContext);
   const [total, setTotal] = useState(0);
+  const ids = cartProduct.map((o: any) => o.id);
+  const filtered = cartProduct.filter(
+    ({ id }: any, index: number) => !ids.includes(id, index + 1)
+  );
+
   const countTotal = () => {
-    const totalPrice = cartProduct.reduce(
-      (T: any, el: any) => T + parseInt(el.price),
+    const totalPrice = filtered.reduce(
+      (T: any, el: any) => T + parseFloat(el.price),
       0
     );
-    return totalPrice;
+    setTotal(totalPrice);
   };
-
-  const handleClear = (el: any) => {
-    const clearedCart = cartProduct.filter((item: any) => item.id !== el.id);
-    setCartProduct(clearedCart);
-  };
-
-  const defaultImg = (e: any) => {
-    e.target.src = `https://www.verywellhealth.com/thmb/9tcRWldBb8cMqDqkjVanPUZYT9I=/3000x2000/filters:fill(87E3EF,1)/gluten-free-makeup-brands-562443-primary-recirc-b8cf5ac52391436ba4114a6355aac323.jpg`;
-  };
+  useEffect(() => {
+    countTotal();
+  }, []);
   return (
     <>
-      <h1>Total:{countTotal()}</h1>
+      <h1>Total:{total.toFixed(2)}</h1>
       <div className={styles.grid}>
-        {cartProduct.map((el: any) => {
+        {filtered.map((el: any) => {
           return (
-            <div className={styles.card} key={el.id}>
-              <p>{el.brand}</p>
-              <p>{el.name}</p>
-              <p>
-                {el.price}
-                {el.price_sign}
-              </p>
-              <img src={el.image_link} onError={(e) => defaultImg(e)}></img>
-              <button onClick={() => handleClear(el)}>clear</button>
-            </div>
+            <CartItem
+              key={el.id}
+              product={el}
+              setTotal={setTotal}
+              total={total}
+            />
           );
         })}
       </div>
